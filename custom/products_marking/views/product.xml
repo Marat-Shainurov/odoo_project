@@ -21,6 +21,53 @@
         </field>
     </record>
 
+
+    <record id="warehouse_form" model="ir.ui.view">
+        <field name="name">products_marking.warehouse.form</field>
+        <field name="model">products_marking.warehouse</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <h2>Warehouse Form</h2>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="company"/>
+                        </group>
+                        <group>
+                            <field name="city"/>
+                            <field name="address"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="prod_properties_change_act_form" model="ir.ui.view">
+        <field name="name">prod_properties_change_act.form</field>
+        <field name="model">prod_properties_change_act</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <h2>Product Properties Change Act Form</h2>
+                    <group>
+                        <group>
+                            <field name="product"/>
+                            <field name="quantity"/>
+                            <field name="status"/>
+                        </group>
+                        <group>
+                            <field name="old_warehouse"/>
+                            <field name="new_warehouse"/>
+                            <field name="cost_or_income"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
     <record id="products_action" model="ir.actions.act_window">
         <field name="name">Products</field>
         <field name="type">ir.actions.act_window</field>
@@ -32,6 +79,31 @@
             </p>
         </field>
     </record>
+
+    <record id="warehouse_action" model="ir.actions.act_window">
+        <field name="name">Warehouse</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">products_marking.warehouse</field>
+        <field name="view_mode">tree,kanban,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Add a new warehouse.
+            </p>
+        </field>
+    </record>
+
+    <record id="prod_properties_change_act_action" model="ir.actions.act_window">
+        <field name="name">Product Properties Change Act</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">prod_properties_change_act</field>
+        <field name="view_mode">tree,kanban,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Add a new Product Properties Change Act.
+            </p>
+        </field>
+    </record>
+
 
     <menuitem id="products_marking_root"
               name="Products Marking"
@@ -47,5 +119,23 @@
               parent="products_root"
               action="products_action"
               sequence="10"/>
+
+    <menuitem id="warehouse_root"
+              name="Warehouses"
+              parent="products_marking_root"/>
+
+    <menuitem id="warehouse_menu"
+              name="Warehouses"
+              parent="warehouse_root"
+              action="warehouse_action"/>
+
+    <menuitem id="documents_root"
+              name="Documents"
+              parent="products_marking_root"/>
+
+    <menuitem id="prod_properties_change_act_menu"
+              name="Product Properties Change Act"
+              parent="documents_root"
+              action="prod_properties_change_act_action"/>
 
 </odoo>

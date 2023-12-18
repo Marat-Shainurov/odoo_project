@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_warehouse_tree" model="ir.ui.view">
+        <field name="name">products_marking.warehouse.tree</field>
+        <field name="model">products_marking.warehouse</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="id"/>
+                <field name="name"/>
+                <field name="name"/>
+                <field name="company"/>
+                <field name="city"/>
+                <field name="address"/>
+                <field name="create_date"/>
+                <field name="create_uid"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="warehouse_form" model="ir.ui.view">
+        <field name="name">products_marking.warehouse.form</field>
+        <field name="model">products_marking.warehouse</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <h2>Warehouse Form</h2>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="company"/>
+                        </group>
+                        <group>
+                            <field name="city"/>
+                            <field name="address"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="warehouse_action" model="ir.actions.act_window">
+        <field name="name">Warehouse</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">products_marking.warehouse</field>
+        <field name="view_mode">tree,kanban,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Add a new warehouse.
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="warehouse_root"
+              name="Warehouses"
+              parent="products_marking_root"/>
+
+    <menuitem id="warehouse_menu"
+              name="Warehouses"
+              parent="warehouse_root"
+              action="warehouse_action"/>
+
+</odoo>

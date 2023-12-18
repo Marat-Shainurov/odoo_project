@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_cost_or_income_item_tree" model="ir.ui.view">
+        <field name="name">cost_or_income_item.tree</field>
+        <field name="model">cost_or_income_item</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="cost_or_income_date"/>
+                <field name="cost_or_income_type"/>
+                <field name="value"/>
+            </tree>
+        </field>
+    </record>
+
+</odoo>

@@ -10,7 +10,13 @@
     'depends': [],
     'data': [
         'security/ir.model.access.csv',
-        'views/product.xml'
+        'views/product_views.xml',
+        'views/warehouse_views.xml',
+        'views/cost_or_income_views.xml',
+        'views/prod_properties_change_act_views.xml',
+        'views/marked_product_views.xml',
+        'report/report.xml',
+        'report/prod_properties_change_act_rep.xml'
     ],
     'demo': [],
     'installable': True,

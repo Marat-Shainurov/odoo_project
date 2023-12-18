@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="prod_properties_change_act_report" model="ir.actions.report">
+        <field name="name">Product Properties Change Act PDF</field>
+        <field name="model">prod_properties_change_act</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">products_marking.report_prod_properties_change_act</field>
+        <field name="report_file">products_marking.report_prod_properties_change_act</field>
+        <field name="binding_model_id" ref="model_prod_properties_change_act"/>
+        <field name="binding_type">report</field>
+    </record>
+
+</odoo>

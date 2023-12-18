@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="products_marking.report_prod_properties_change_act">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h3 class="text-center">Product Properties Change Act</h3>
+                        <br/>
+                        <div class="oe_structure">
+                            <div class="row">
+                                <table class="table table-bordered mt32">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center">
+                                                <span>ID</span>
+                                            </th>
+                                            <th class="text-center">
+                                                <span>Creation date</span>
+                                            </th>
+                                            <th class="text-center">
+                                                <span>Product</span>
+                                            </th>
+                                            <th class="text-center">
+                                                <span>Marked Products</span>
+                                            </th>
+                                            <th class="text-center">
+                                                <span>Product movement status</span>
+                                            </th>
+                                            <th class="text-center">
+                                                <span>Old warehouse</span>
+                                            </th>
+                                            <th class="text-center">
+                                                <span>New Warehouse</span>
+                                            </th>
+                                            <th class="text-center">
+                                                <span>Cost or income items</span>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="text-center">
+                                            <td>
+                                                <span t-field="o.id"/>
+                                            </td>
+                                            <td>
+                                                <span t-field="o.act_creation_date"/>
+                                            </td>
+                                            <td>
+                                                <span t-field="o.product_id"/>
+                                            </td>
+                                            <td>
+                                                <span t-field="o.marked_product_ids"/>
+                                            </td>
+                                            <td>
+                                                <span t-field="o.status"/>
+                                            </td>
+                                            <td>
+                                                <span t-field="o.old_warehouse_id"/>
+                                            </td>
+                                            <td>
+                                                <span t-field="o.new_warehouse_id"/>
+                                            </td>
+                                            <td>
+                                                <span t-field="o.cost_or_income_ids"/>
+                                            </td>
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+</odoo>

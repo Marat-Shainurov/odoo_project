@@ -46,6 +46,18 @@ class ProdPropertiesChangeAct(models.Model):
         default=fields.Date.today())
 
     def apply_act(self, *args, **kwargs):
+        """
+        This method creates or updates the MarkedProduct instances.
+
+        If self.status is 'purchase' the method creates unique MarkedProduct objects self.quantity times.
+        All the cost_or_income_items are assigned with evenly divided values.
+
+        If self.status is not 'purchase' the MarkedProduct instances (passes in self.marked_product_ids)
+        are searched in the database and being updated.
+        All the cost_or_income_items are assigned with evenly divided values.
+
+        After execution the user is redirected to the MarkedProducts list page.
+        """
         if self.status == 'purchase':
             cost_or_income_items_set = set()
             cost_or_income_items_set.update(self.env['cost_or_income_item'].create({

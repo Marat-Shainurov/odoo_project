@@ -11,8 +11,15 @@ class ProdPropertiesChangeAct(models.Model):
     _name = 'prod_properties_change_act'
     _description = 'Product Properties Change Act'
 
-    product_id = fields.Many2one('products_marking.product', string='Product', required=True, ondelete='restrict')
-    quantity = fields.Integer(string='Quantity', required=True)
+    product_id = fields.Many2one(
+        'products_marking.product',
+        string='Product',
+        ondelete='restrict')
+    marked_product_ids = fields.Many2many(
+        'products_marking.marked_product',
+        string='Marked products',
+        ondelete='restrict')
+    quantity = fields.Integer(string='Quantity')
     status = fields.Selection(
         selection=PRODUCT_MOVEMENT_STATUS,
         string="Product movement status",
@@ -33,32 +40,40 @@ class ProdPropertiesChangeAct(models.Model):
         string='Cost or income items',
         help='Cost or income items for the product',
         required=False)
-    datetime_act = fields.Date(
+    act_creation_date = fields.Date(
         string="Act creation date",
         required=True,
-        help="Creation date of the Act",
         default=fields.Date.today())
 
     def apply_act(self, *args, **kwargs):
-        marked_product = self.env['products_marking.marked_product'].search([('product_id', '=', self.product_id.id)])
-        if marked_product.id and self.status != 'purchase':
-            marked_product.write({
-                'last_assigned_warehouse_id': self.new_warehouse_id.id,
-                'last_assigned_status': self.status,
-                'cost_or_income_item_ids': [(4, cost_or_income_id.id) for cost_or_income_id in self.cost_or_income_ids]
-            })
-            return marked_product
+        if self.status == 'purchase':
+            cost_or_income_items_set = set()
+            cost_or_income_items_set.update(self.env['cost_or_income_item'].create({
+                'cost_or_income_type': i.cost_or_income_type,
+                'value': i.value / self.quantity,
+                'cost_or_income_date': i.cost_or_income_date
+            }) for i in self.cost_or_income_ids)
+
+            for _ in range(self.quantity):
+                self.env['products_marking.marked_product'].create(
+                    {
+                        'product_id': self.product_id.id,
+                        'last_assigned_warehouse_id': self.new_warehouse_id.id,
+                        'last_assigned_status': self.status,
+                        'cost_or_income_item_ids': [(4, item.id) for item in cost_or_income_items_set]})
         else:
-            new_marked_product = self.env['products_marking.marked_product'].create({
-                'product_id': self.product_id.id,
-                'last_assigned_warehouse_id': self.new_warehouse_id.id,
-                'last_assigned_status': self.status,
-                'cost_or_income_item_ids': [(4, cost_or_income_id.id) for cost_or_income_id in self.cost_or_income_ids]
-            })
-            return new_marked_product
+            cost_or_income_items_set = set()
+            cost_or_income_items_set.update(self.env['cost_or_income_item'].create({
+                'cost_or_income_type': i.cost_or_income_type,
+                'value': i.value / len(self.marked_product_ids),
+                'cost_or_income_date': i.cost_or_income_date
+            }) for i in self.cost_or_income_ids)
 
+            for product in self.marked_product_ids:
+                marked_product = self.env['products_marking.marked_product'].search(
+                    [('id', '=', product.id)])
 
-# todo
-#  1. Add the MarkedProduct model + ondelete behavior for all the related models
-#  2. And the business logic to MarkedProduct model and the PPC act applying.
-#  3. Styles
+                marked_product.write({
+                    'last_assigned_warehouse_id': self.new_warehouse_id.id,
+                    'last_assigned_status': self.status,
+                    'cost_or_income_item_ids': [(4, item.id) for item in cost_or_income_items_set]})

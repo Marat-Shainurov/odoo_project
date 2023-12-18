@@ -29,17 +29,20 @@ class ProdPropertiesChangeAct(models.Model):
     old_warehouse_id = fields.Many2one(
         'products_marking.warehouse',
         string='Old warehouse',
-        help='Warehouse FROM which the products are moved')
+        help='Warehouse FROM which the products are moved',
+        ondelete='restrict')
     new_warehouse_id = fields.Many2one(
         'products_marking.warehouse',
         string='New warehouse',
         help='Warehouse TO which the products are moved',
-        required=True)
+        required=True,
+        ondelete='restrict')
     cost_or_income_ids = fields.Many2many(
         'cost_or_income_item',
         string='Cost or income items',
         help='Cost or income items for the product',
-        required=False)
+        required=False,
+        ondelete='restrict')
     act_creation_date = fields.Date(
         string="Act creation date",
         required=True,

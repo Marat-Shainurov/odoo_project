@@ -77,3 +77,9 @@ class ProdPropertiesChangeAct(models.Model):
                     'last_assigned_warehouse_id': self.new_warehouse_id.id,
                     'last_assigned_status': self.status,
                     'cost_or_income_item_ids': [(4, item.id) for item in cost_or_income_items_set]})
+
+        return {
+            'type': 'ir.actions.act_url',
+            'target': 'self',
+            'url': 'http://localhost:8069/web#action=90&model=products_marking.marked_product&view_type=list&cids=1&menu_id=70'
+        }

@@ -43,13 +43,18 @@ class MarkedProduct(models.Model):
 
     @api.depends('cost_or_income_item_ids.value')
     def _compute_total_cost(self):
-        self.total_cost = sum(i.value for i in self.cost_or_income_item_ids if 'revenue' not in i.cost_or_income_type)
+        for record in self:
+            record.total_cost = sum(
+                i.value for i in self.cost_or_income_item_ids if i.cost_or_income_type in [
+                    'agent_commission', 'promotion_costs', 'logistics_costs', 'purchase_costs'])
 
     @api.depends('cost_or_income_item_ids.value')
     def _compute_total_income(self):
-        self.total_income = sum(i.value for i in self.cost_or_income_item_ids if 'revenue' in i.cost_or_income_type)
+        for record in self:
+            record.total_income = sum(i.value for i in self.cost_or_income_item_ids if i.cost_or_income_type in [
+                'sale_revenue', ])
 
-    @api.depends('cost_or_income_item_ids.value')
+    @api.depends('total_cost', 'total_income')
     def _compute_total_profit(self):
         for record in self:
             record.total_profit = record.total_income - record.total_cost

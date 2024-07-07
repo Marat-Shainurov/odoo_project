@@ -15,6 +15,8 @@ class MarkedProduct(models.Model):
         'products_marking.product',
         string="Product",
         required=True, index=True)
+    company_id = fields.Many2one("res.company", string="Company", default=lambda self: self.env.company)
+    currency_id = fields.Many2one("res.currency", related="company_id.currency_id", string="Currency")
     last_assigned_warehouse_id = fields.Many2one(
         'products_marking.warehouse',
         string='Last assigned warehouse',
@@ -23,12 +25,12 @@ class MarkedProduct(models.Model):
         selection=PRODUCT_MOVEMENT_STATUS,
         string="Last product movement status",
         required=True)
-    cost_or_income_item_ids = fields.Many2many(
+    cost_or_income_item_ids = fields.One2many(
         'cost_or_income_item',
-        string='Cost or income items applied to the marked product',
-        required=True
+        'marked_product_id',
+        string='Cost or income items applied to the marked product'
     )
-    total_cost = fields.Float(
+    total_cost = fields.Monetary(
         string='Total cost',
         compute='_compute_total_cost',
         store=True)

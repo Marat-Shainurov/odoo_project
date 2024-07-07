@@ -10,11 +10,12 @@
                 <field name="product_id"/>
                 <field name="last_assigned_warehouse_id"/>
                 <field name="last_assigned_status"/>
-                <field name="total_cost"/>
+                <field name="total_cost" />
                 <field name="total_income"/>
                 <field name="total_profit"/>
                 <field name="create_date"/>
                 <field name="create_uid"/>
+                <field name="currency_id" invisible="1"/>
             </tree>
         </field>
     </record>
@@ -39,11 +40,13 @@
                                     <field name="cost_or_income_date"/>
                                     <field name="cost_or_income_type"/>
                                     <field name="value"/>
+                                    <field name="currency_id" invisible="1"/>
                                 </tree>
                             </field>
                             <field name="total_cost"/>
                             <field name="total_income"/>
                             <field name="total_profit"/>
+                            <field name="currency_id" invisible="1"/>
                         </group>
                     </group>
                 </sheet>

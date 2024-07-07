@@ -7,7 +7,7 @@
     'description': "Products Marking System",
     'category': 'Sales',
     'website': 'https://github.com/Marat-Shainurov',
-    'depends': [],
+    'depends': ["base", "web"],
     'data': [
         'security/ir.model.access.csv',
         'views/product_views.xml',

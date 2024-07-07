@@ -1,4 +1,5 @@
 from odoo import api, fields, models
+from odoo.exceptions import ValidationError
 
 PRODUCT_MOVEMENT_STATUS = [
     ("purchase", "Purchase"),
@@ -47,6 +48,39 @@ class ProdPropertiesChangeAct(models.Model):
         string="Act creation date",
         required=True,
         default=fields.Date.today())
+    allowed_warehouse_ids = fields.Many2many(
+        'products_marking.warehouse',
+        compute='_compute_allowed_warehouse_ids',
+        string="Allowed Warehouses", store=True)
+
+    @api.depends('old_warehouse_id', 'act_creation_date')
+    def _compute_allowed_warehouse_ids(self):
+        for record in self:
+            all_warehouse_ids = self.env['products_marking.warehouse'].search([])
+            if record.old_warehouse_id:
+                record.allowed_warehouse_ids = [(5, 0, 0)]
+                record.allowed_warehouse_ids = [(4, record.old_warehouse_id.id)]
+            else:
+                record.allowed_warehouse_ids = [(6, 0, all_warehouse_ids.ids)]
+
+    @api.onchange("marked_product_ids")
+    def onchange_marked_product_ids(self):
+        self._compute_allowed_warehouse_ids()
+
+        wh_id_from_products = self.marked_product_ids.mapped("last_assigned_warehouse_id")
+        if len(wh_id_from_products) > 1:
+            raise ValidationError("Last Warehouse of all the selected marked products should be the same!")
+        else:
+            self.old_warehouse_id = wh_id_from_products.id if wh_id_from_products else False
+
+    @api.onchange("old_warehouse_id")
+    def onchange_old_warehouse_id(self):
+        self._compute_allowed_warehouse_ids()
+
+        products_wrong_warehouse = self.marked_product_ids.filtered(
+            lambda p: p.last_assigned_warehouse_id.id != self.old_warehouse_id.id)
+        for product_id in products_wrong_warehouse:
+            self.marked_product_ids = [(3, product_id.id)]
 
     def apply_act(self, *args, **kwargs):
         """
@@ -93,8 +127,12 @@ class ProdPropertiesChangeAct(models.Model):
                     'last_assigned_status': self.status,
                     'cost_or_income_item_ids': [(4, item.id) for item in cost_or_income_items_set]})
 
+        menu_id = self.env.ref('products_marking.marked_products_menu').id
+        action_id = self.env.ref('products_marking.marked_products_action').id
+        base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
+
         return {
             'type': 'ir.actions.act_url',
             'target': 'self',
-            'url': 'http://localhost:8069/web#action=90&model=products_marking.marked_product&view_type=list&cids=1&menu_id=70'
+            'url': f'{base_url}/web#action={action_id}&model=products_marking.marked_product&view_type=list&cids=1&menu_id={menu_id}'
         }

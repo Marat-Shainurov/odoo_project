@@ -21,7 +21,7 @@
         <field name="name">prod_properties_change_act.form</field>
         <field name="model">prod_properties_change_act</field>
         <field name="arch" type="xml">
-            <form edit="0">
+            <form>
                 <sheet>
                     <h2>Product Properties Change Act Form</h2>
                     <group>
@@ -55,8 +55,8 @@
                               invisible="status == 'purchase'"
                               class="oe_notebook_page">
                             <group>
-                                <field name="marked_product_ids">
-                                    <tree>
+                                <field name="marked_product_ids" domain="[('last_assigned_warehouse_id', 'in', allowed_warehouse_ids)]">
+                                    <tree create="1" delete="1">
                                         <field name="id"/>
                                         <field name="product_id"/>
                                         <field name="last_assigned_warehouse_id"/>
@@ -65,6 +65,7 @@
                                     </tree>
                                 </field>
                             </group>
+                            <field name="allowed_warehouse_ids" invisible="1"/>
                         </page>
                         <page string="Cost or income items"
                               name="cost_or_income_ids_notebook_page"

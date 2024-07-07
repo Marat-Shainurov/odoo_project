@@ -32,7 +32,8 @@
                         </group>
                         <group>
                             <field name="city"/>
-                            <field name="address"/>
+                            <field name="address" style="background-color: #faa" invisible="city"/>
+                            <field name="address" invisible="not city"/>
                         </group>
                     </group>
                 </sheet>

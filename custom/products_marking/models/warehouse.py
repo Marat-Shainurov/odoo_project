@@ -7,5 +7,5 @@ class Warehouse(models.Model):
 
     name = fields.Char(string='Warehouse name', required=True)
     company = fields.Char(string='Warehouse company', required=True)
-    city = fields.Char(string='Warehouse city', required=True)
-    address = fields.Char(string='Warehouse address', required=True)
+    city = fields.Char(string='Warehouse city')
+    address = fields.Char(string='Warehouse address')

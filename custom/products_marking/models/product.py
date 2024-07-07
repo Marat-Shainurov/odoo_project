@@ -7,3 +7,4 @@ class Product(models.Model):
 
     name = fields.Char(string='Product name', required=True)
     description = fields.Text(string='Product description')
+    properties_definition = fields.PropertiesDefinition('Properties')

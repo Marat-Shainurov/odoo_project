@@ -29,6 +29,7 @@
                             <field name="act_creation_date" readonly="1"/>
                             <field name="status"/>
                         </group>
+
                         <group>
                             <field name="old_warehouse_id"
                                    required="status != 'purchase'"
@@ -89,6 +90,17 @@
                 </sheet>
             </form>
         </field>
+    </record>
+
+    <record id="prod_properties_change_act_form_prop" model="ir.ui.view">
+       <field name="name">prod_properties_change_act_form_prop</field>
+       <field name="model">prod_properties_change_act</field>
+       <field name="inherit_id" ref="products_marking.prod_properties_change_act_form"/>
+       <field name="arch" type="xml">
+           <xpath expr="//field[@name='status']" position="after">
+               <field name="properties" widget="properties"/>
+           </xpath>
+       </field>
     </record>
 
     <record id="prod_properties_change_act_action" model="ir.actions.act_window">

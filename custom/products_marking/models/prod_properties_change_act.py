@@ -48,6 +48,8 @@ class ProdPropertiesChangeAct(models.Model):
         string="Act creation date",
         required=True,
         default=fields.Date.today())
+    properties = fields.Properties('Properties', definition='product_id.properties_definition', copy=True)
+
     allowed_warehouse_ids = fields.Many2many(
         'products_marking.warehouse',
         compute='_compute_allowed_warehouse_ids',

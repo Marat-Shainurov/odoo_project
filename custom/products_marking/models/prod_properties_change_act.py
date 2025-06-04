@@ -129,12 +129,11 @@ class ProdPropertiesChangeAct(models.Model):
                     'last_assigned_status': self.status,
                     'cost_or_income_item_ids': [(4, item.id) for item in cost_or_income_items_set]})
 
-        menu_id = self.env.ref('products_marking.marked_products_menu').id
-        action_id = self.env.ref('products_marking.marked_products_action').id
-        base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
-
         return {
-            'type': 'ir.actions.act_url',
-            'target': 'self',
-            'url': f'{base_url}/web#action={action_id}&model=products_marking.marked_product&view_type=list&cids=1&menu_id={menu_id}'
+            'type': 'ir.actions.act_window',
+            'name': 'Marked Products',
+            'res_model': 'products_marking.marked_product',
+            'view_mode': 'tree,kanban,form',
+            'context': {'create': False},
+            'target': 'current',
         }
